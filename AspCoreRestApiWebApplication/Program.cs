@@ -70,9 +70,11 @@ app.Run(async context =>
         try
         {
             Employee? employeeClient = await request.ReadFromJsonAsync<Employee>();
-            if(employeeClient is not null)
+
+            if (employeeClient is not null)
             {
                 Employee? employee = employees.FirstOrDefault(e => e.Id == employeeClient.Id);
+
                 if(employee is not null)
                 {
                     employee.Name = employeeClient.Name;
@@ -91,7 +93,7 @@ app.Run(async context =>
         catch(Exception)
         {
             response.StatusCode = StatusCodes.Status400BadRequest;
-            await response.WriteAsJsonAsync(new { message = "Incorrect data" });
+            await response.WriteAsJsonAsync(new { message = "Incorrect data )))" });
         }
     }
     // DELETE

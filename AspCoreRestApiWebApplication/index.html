@@ -7,7 +7,7 @@
 <body>
     <h2>Employee list:</h2>
     <div>
-        <input type="hidden" id="id" />
+        <input type="hidden" id="employeeId" />
         <p>
             <label>Name: </label>
             <input type="text" id="name" />
@@ -48,7 +48,24 @@
         }
 
         async function getEmployee(id) {
+            const response = await fetch(`/api/${id}`, {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json",
+                }
+            });
 
+            if (response.ok === true) {
+                const employee = await response.json();
+
+                document.getElementById("employeeId").value = employee.id;
+                document.getElementById("name").value = employee.name;
+                document.getElementById("age").value = employee.age;
+            }
+            else {
+                const error = await response.json();
+                console.log(error.message);
+            }
         }
 
         async function createEmployee(employeeName, employeeAge) {
@@ -75,16 +92,54 @@
             }
         }
 
-        async function editEmployee(id, name, age) {
+        async function editEmployee(employeeId, employeeName, employeeAge) {
 
+            const response = await fetch(`/api`, {
+                method: "PUT",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    id: employeeId,
+                    name: employeeName,
+                    age: parseInt(employeeAge, 10)
+                })
+            });
+
+            if (response.ok === true) {
+                const employee = await response.json();
+                document.querySelector(`tr[data-id="${employee.id}"]`)
+                    .replaceWith(tableRowCreate(employee));
+            }
+            else {
+                const error = await response.json();
+                console.log(error.message);
+            }
         }
 
         async function deleteEmployee(id) {
+            const response = await fetch(`/api/${id}`, {
+                method: "DELETE",
+                headers: {
+                    "Accept": "application/json",
+                }
+            });
 
+            if (response.ok === true) {
+                const employee = await response.json();
+
+                document.querySelector(`tr[data-id="${employee.id}"]`)
+                    .remove();
+            }
+            else {
+                const error = await response.json();
+                console.log(error.message);
+            }
         }
 
         async function saveHandler() {
-            const id = document.getElementById("id").value;
+            const id = document.getElementById("employeeId").value;
             const name = document.getElementById("name").value;
             const age = document.getElementById("age").value;
 
@@ -96,7 +151,7 @@
         }
 
         function resetHandler() {
-            document.getElementById("id").value = "";
+            document.getElementById("employeeId").value = "";
             document.getElementById("name").value = "";
             document.getElementById("age").value = 0;
         }
