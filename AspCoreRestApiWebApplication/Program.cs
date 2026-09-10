@@ -3,7 +3,9 @@ using System.Text.RegularExpressions;
 
 List<Employee> employees = new List<Employee>()
 {
-
+    new(){ Id = Guid.NewGuid().ToString(), Name = "Bobby", Age = 25 },
+    new(){ Id = Guid.NewGuid().ToString(), Name = "Sammy", Age = 31 },
+    new(){ Id = Guid.NewGuid().ToString(), Name = "Jimmy", Age = 19 },
 };
 
 var builder = WebApplication.CreateBuilder(args);
