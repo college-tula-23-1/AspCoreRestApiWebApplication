@@ -118,6 +118,16 @@ app.Run(async context =>
         response.ContentType = "text/html; charset=utf-8";
         await response.SendFileAsync("index.html");
     }
+
+    app.MapGet("/api", () => Results.Json(employees));
+    app.MapGet("/api/{id}", (string id) =>
+    {
+
+    });
+
+    
+
+
 });
 
 
